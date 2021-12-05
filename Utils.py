@@ -79,10 +79,10 @@ alpha_value = randrange(30,40,5)
 
 chars = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', "^", "&", "*", "(", ")", "|"]
 
-font = pygame.font.Font("C:\\Users\\1000256474\\Desktop\\Quiz\\Hunt\\MSMINCHO.TTF", FONT_SIZE)
-font_art = pygame.font.Font("C:\\Users\\1000256474\\Desktop\\Quiz\\Hunt\\MSMINCHO.TTF", 10)
-font_1 = pygame.font.Font("C:\\Users\\1000256474\\Desktop\\Quiz\\Hunt\\MSMINCHO.TTF", FONT_SIZE - FONT_SIZE//6)
-font_2 = pygame.font.Font("C:\\Users\\1000256474\\Desktop\\Quiz\\Hunt\\MSMINCHO.TTF", FONT_SIZE - FONT_SIZE//3)
+font = pygame.font.Font("C:\\Users\\1000256474\\Desktop\\Quiz\\HackTheAIProject\\MSMINCHO.TTF", FONT_SIZE)
+font_art = pygame.font.Font("C:\\Users\\1000256474\\Desktop\\Quiz\\HackTheAIProject\\MSMINCHO.TTF", 10)
+font_1 = pygame.font.Font("C:\\Users\\1000256474\\Desktop\\Quiz\\HackTheAIProject\\MSMINCHO.TTF", FONT_SIZE - FONT_SIZE//6)
+font_2 = pygame.font.Font("C:\\Users\\1000256474\\Desktop\\Quiz\\HackTheAIProject\\MSMINCHO.TTF", FONT_SIZE - FONT_SIZE//3)
 
 green_chars = [font.render(char, True, (randrange(0,100), 255, randrange(0,100))) for char in chars]
 green_chars_2 = [font_1.render(char, True, (40, randrange(100,175), 40)) for char in chars]
@@ -160,7 +160,7 @@ symbols = [Symbol(x, randrange(-HEIGHT, 0)) for x in range(0, WIDTH, FONT_SIZE)]
 symbols_2 = [Symbol(x, randrange(-HEIGHT, 0)) for x in range(FONT_SIZE, WIDTH, FONT_SIZE*3)]
 symbols_3 = [Symbol(x, randrange(-HEIGHT, 0)) for x in range(FONT_SIZE*2, WIDTH, FONT_SIZE*3)]
 
-ai_ascii_art = open("C:\\Users\\1000256474\\Desktop\\Quiz\\Hunt\\AI.txt", "r")
+ai_ascii_art = open("C:\\Users\\1000256474\\Desktop\\Quiz\\HackTheAIProject\\AI.txt", "r")
 line_offset = []
 id = 0
 for line in ai_ascii_art:
