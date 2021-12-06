@@ -1,6 +1,7 @@
 import pygame
 import sys
 import time
+import os
 pygame.init()
 from random import choice, randrange
 import  random
@@ -85,11 +86,27 @@ display_surface.set_alpha(255)
 
 clock = pygame.time.Clock()
 input = ""
+clue_printed = False
 
 def print_clue_func():
-    text_surface = font.render("Next clue can be found at !!!" + "/abcbadsf/", True, 'green')
+    text_surface1 = font.render("Next clue can be found at: " + "C://HackTheAI//" + "clue.txt" , True, 'green')
+    text_surface2 = font.render("Input OK to Continue playing for an Easter Egg", True, 'green')
+    youtube_link = "https://www.youtube.com/watch?v=6Mawk3qenhI"
+    if not os.path.exists('c:\\HackTheAI'):
+        os.makedirs('c:\\HackTheAI')
+
+    if clue_printed == False:
+        fReport = open('c:\\HackTheAI\\' + 'clue.txt', 'w')
+        fReport.write("Open the link for the clue : " + youtube_link)
+        fReport.flush()
+        fReport.close()
+        update_clue_variable()
     # render at position stated in arguments
-    screen.blit(text_surface, (WIDTH/3, HEIGHT/2))
+    screen.blit(text_surface1, (WIDTH/3, HEIGHT/2))
+    screen.blit(text_surface2, (WIDTH /3, HEIGHT / 2 + FONT_SIZE))
+
+def update_clue_variable():
+    clue_printed = True
 
 def user_input_box():
     y_coordinate = printx.get_y_coordinates()
@@ -129,7 +146,7 @@ game_won = False
 
 last_point = False
 time_start = 0
-question = 0
+question = 5
 received_enter = False
 print_clue = False
 give_easter_egg = False
@@ -138,7 +155,10 @@ waiting_for_only_enter = False
 received_only_enter = False
 wrong_answer_output_string = ""
 write_answer_right_string = ""
+hint_string = ""
 katie_print_first_time = True
+wrong_answers_list = []
+hint_threshold = 2
 
 def get_question_object():
     if question == 1:
@@ -176,7 +196,7 @@ while run:
         if katie_print_first_time:
             for i in range(len(katie_map)):
                 screen.blit(katie_map[i][0], katie_map[i][1])
-                pygame.time.delay(3)
+                pygame.time.delay(0) # TODO: Update to 2
                 pygame.display.update()
             line = len(line_offset)+1
             katie_print_first_time = False
@@ -222,13 +242,31 @@ while run:
 
             elif input != "" and received_enter:
                 if not wrong_answer_output_string:
-                    wrong_answer_output_string = random.choice(commonprompts.wrong_answer) + random.choice(commonprompts.basic_prompts) + commonprompts.cont_text[1]
+                    skip_typing = False
+                    if len(wrong_answers_list) == hint_threshold:
+                        wrong_answer_output_string = random.choice(commonprompts.hint_precursor) + random.choice(question_obj.hint) + \
+                                                commonprompts.cont_text[1]
+                        wrong_answers_list = []
+                    else:
+                        wrong_answer_output_string = random.choice(commonprompts.wrong_answer) + random.choice(commonprompts.basic_prompts) + commonprompts.cont_text[1]
+                        wrong_answers_list.append(input)
                 printx.print2screen(wrong_answer_output_string, 0, printx.get_y_coordinates() + FONT_SIZE, FONT_SIZE)
-                skip_typing = True
                 pygame.time.delay(200)
+                skip_typing = True
+
+            # if len(wrong_answers_list) == hint_threshold and not hint_string:
+            #     if not hint_string:
+            #         skip_typing = False
+            #         hint_string = random.choice(commonprompts.hint_precursor) + random.choice(question_obj.hint) + \
+            #                       commonprompts.cont_text[1]
+            #         wrong_answers_list = []
+            #     printx.print2screen(hint_string, 0, printx.get_y_coordinates() + FONT_SIZE, FONT_SIZE)
+            #     skip_typing = True
+            # pygame.time.delay(200)
 
             if waiting_for_only_enter and received_only_enter:
                 question += 1
+                wrong_answers_list = []
                 received_only_enter = False
                 waiting_for_only_enter = False
                 input = ""
@@ -285,6 +323,7 @@ while run:
                 input = str(user_text.lower())
                 wrong_answer_output_string = ""
                 write_answer_right_string = ""
+                hint_string = ""
                 if user_text == "hello":
                     game_won = True
                     time_start = time.time()
@@ -299,7 +338,6 @@ while run:
             # formation
             else:
                 user_text += event.unicode
-                # user_text = user_text.lower()
 
 if __name__ == "__main__":
     main_function()

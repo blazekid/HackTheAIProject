@@ -54,6 +54,7 @@ class Question6:
     hint = ["Maybe one of the friends needs to wait at the other side? Think hard!!!"]
     prompts = ["it looks like they are going to miss the marriage... hurry up!", "Maybe they should have brought 4 umbrellas, you guys are not that helpful"]
 
+# Easter Eggs
 class Question7:
     question = "I come from a world of unix, and I was entrusted with a few Easter Eggs \n" \
                "One of these eggs can be yours but only if you can force me to give it you....................\n"
@@ -69,5 +70,5 @@ class CommonPrompts:
     brute_force = ["Seriously Brute Force?????", "Rise above brute force!!!"," Your Brute Force won't work"]
     right_answer = ["yup, you got it right.", "Ok, you got this one", "Right Answer"]
     wrong_answer = ["Nahh, ", "Nops, ", "Naaa, ", "Incorrect Answer, ", "Wrong Answer, "]
-    hint_precursor = ["you seem lost human, here is a hint to help you out!", "Hahaha, and you thought you will defeat AI, here ia a hint for you weakling."]
+    hint_precursor = ["You seem bit lost human, here is a hint to help you out! \n", "Hahaha, and you thought you will defeat AI. Here ia a hint for you weakling. \n"]
     cont_text = [" Press Enter to continue" ,  " | Press Enter to continue"]
