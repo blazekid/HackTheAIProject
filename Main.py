@@ -258,14 +258,17 @@ while run:
 
             if not wrong_answer and received_enter:
                 if not write_answer_right_string:
+                    skip_typing = False
                     write_answer_right_string = random.choice(commonprompts.right_answer) + commonprompts.cont_text[1]
                     if question == 7:
-                        write_answer_right_string = "Here is your egg, Easter Elephant" + commonprompts.cont_text[1]
+                        write_answer_right_string = "Here is your egg: [Easter Falcon]" + " Press Enter to continue"
                 for index in range(10):
                     mask_screen = pygame.Rect((0, (line + index) * FONT_SIZE), (1500, FONT_SIZE))
                     pygame.draw.rect(screen, 'black', mask_screen)
                 printx.print2screen(write_answer_right_string, 0, (line - CURSOR) * 10, FONT_SIZE)
+                skip_typing = True
                 waiting_for_only_enter = True
+                received_only_enter = False
                 pygame.time.delay(200)
             elif input != "" and received_enter:
                 if not wrong_answer_output_string:
@@ -281,6 +284,7 @@ while run:
                     else:
                         wrong_answer_output_string = random.choice(commonprompts.wrong_answer) + random.choice(commonprompts.basic_prompts) + commonprompts.cont_text[1]
                         wrong_answers_list.append(input)
+                received_only_enter = False
                 printx.print2screen(wrong_answer_output_string, 0, printx.get_y_coordinates() + FONT_SIZE, FONT_SIZE)
                 pygame.time.delay(200)
                 skip_typing = True
@@ -316,6 +320,7 @@ while run:
         if input == "ok":
             print_clue = False
             input = ""
+            received_only_enter = False
             give_easter_egg = True
             for index in range(10):
                 y_offset = printx.get_y_coordinates()

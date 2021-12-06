@@ -60,8 +60,7 @@ class Question7:
                "One of these eggs can be yours but only if you can force me to give it you.\n"
     answer = ["sudo"]
     hint = ["Maybe you should continue the hunt, and come back to me when you have conquered the treasure..."]
-    prompts = ["it looks like they are going to miss the marriage... hurry up!",
-               "Maybe they should have brought 4 umbrellas, you guys are not that helpful"]
+    prompts = ["Maybe you should continue the hunt, and come back to me when you have conquered the treasure..."]
 
 # Easter Egg 2
 class Question8:
