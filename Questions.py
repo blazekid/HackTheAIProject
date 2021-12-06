@@ -39,7 +39,7 @@ class Question4:
 class Question5:
     question = "7 scientists - Anny, Bobby, Cathy, Danny, Effy, Fanny and Garry were working in a chemistry lab. \n" \
                "Next day, Garry was found dead with numbers 10 and 26 written on his hands. \n" \
-               "Pol ice concluded it was a job of 2 Murderers.\n" \
+               "Police concluded it was a job of 2 Murderers.\n" \
                "Who are they??? (input names separated by space)??? \n"
     answer = ["anny", "effy"]
     hint = ["May be you need to refer to your chemistry notes", "Garry loved periodic tables"]
@@ -54,14 +54,25 @@ class Question6:
     hint = ["Maybe one of the friends needs to wait at the other side? Think hard!!!"]
     prompts = ["it looks like they are going to miss the marriage... hurry up!", "Maybe they should have brought 4 umbrellas, you guys are not that helpful"]
 
-# Easter Eggs
+# Easter Egg 1
 class Question7:
     question = "I come from a world of unix, and I was entrusted with a few Easter Eggs \n" \
-               "One of these eggs can be yours but only if you can force me to give it you....................\n"
+               "One of these eggs can be yours but only if you can force me to give it you.\n"
     answer = ["sudo"]
     hint = ["Maybe you should continue the hunt, and come back to me when you have conquered the treasure..."]
     prompts = ["it looks like they are going to miss the marriage... hurry up!",
                "Maybe they should have brought 4 umbrellas, you guys are not that helpful"]
+
+# Easter Egg 2
+class Question8:
+    question = "Though you may have defeated me and got the next clue along with one of the Easter Eggs.\n" \
+               "         But you will never be able to find the 2nd Easter Egg that I have.!!!           \n" \
+               "               It will be lost forever in the darkness of 1s and 0s.                      \n" \
+               "                               Remember the name                                               \n" \
+               "                                 KATIE WEIRS                                                  \n"
+    answer = ["Hello, I am Katie Weirs."]
+    hint = ["10101"]
+    prompts = ["10101"]
 
 
 class CommonPrompts:
@@ -71,4 +82,4 @@ class CommonPrompts:
     right_answer = ["yup, you got it right.", "Ok, you got this one", "Right Answer"]
     wrong_answer = ["Nahh, ", "Nops, ", "Naaa, ", "Incorrect Answer, ", "Wrong Answer, "]
     hint_precursor = ["You seem bit lost human, here is a hint to help you out! \n", "Hahaha, and you thought you will defeat AI. Here ia a hint for you weakling. \n"]
-    cont_text = [" Press Enter to continue" ,  " | Press Enter to continue"]
+    cont_text = [" Press Enter to continue",  " Press Enter to continue", " Press Enter"]

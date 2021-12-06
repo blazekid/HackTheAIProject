@@ -16,7 +16,8 @@ question3 = Questions.Question3()
 question4 = Questions.Question4()
 question5 = Questions.Question5()
 question6 = Questions.Question6()
-question7 = Questions.Question7()
+question7 = Questions.Question7()  # Easter Egg 1
+question8 = Questions.Question8()  # Easter Egg 2
 commonprompts = Questions.CommonPrompts()
 
 def main_funtion():
@@ -77,6 +78,7 @@ alpha_value = randrange(30,40,5)
 
 font = pygame.font.Font("C:\\Users\\1000256474\\Desktop\\Quiz\\HackTheAIProject\\MSMINCHO.TTF", FONT_SIZE)
 font_art = pygame.font.Font("C:\\Users\\1000256474\\Desktop\\Quiz\\HackTheAIProject\\MSMINCHO.TTF", 10)
+font_big = pygame.font.Font("C:\\Users\\1000256474\\Desktop\\Quiz\\HackTheAIProject\\MSMINCHO.TTF", 30)
 
 
 screen = pygame.display.set_mode(RES)
@@ -143,10 +145,11 @@ ai_ascii_art.seek(0)
 run = True
 user_text = ''
 game_won = False
+game_end = False  # TODO: make it false
 
 last_point = False
 time_start = 0
-question = 5
+question = 0
 received_enter = False
 print_clue = False
 give_easter_egg = False
@@ -158,7 +161,8 @@ write_answer_right_string = ""
 hint_string = ""
 katie_print_first_time = True
 wrong_answers_list = []
-hint_threshold = 2
+hint_threshold = 5
+wrong_answer = False
 
 def get_question_object():
     if question == 1:
@@ -175,6 +179,8 @@ def get_question_object():
         return  question6
     elif question == 7:
         return  question7
+    elif question == 8:
+        return  question8
 
 katie_map = []
 for index in range(len(line_offset)):
@@ -191,7 +197,7 @@ random.shuffle(katie_map)
 while run:
     screen.blit(display_surface, (0, 0))
     display_surface.fill(pygame.Color('black'))
-    if not game_won and not print_clue:
+    if not game_won and not game_end and not print_clue:
         # While loop to print the ascii art
         if katie_print_first_time:
             for i in range(len(katie_map)):
@@ -211,7 +217,6 @@ while run:
             line += 1
 
         if question == 0:
-            solved = False
             if not waiting_for_only_enter:
                 printx.print2screen(question0.question, 0, (line - CURSOR) * 10, FONT_SIZE)
             user_input_box()
@@ -226,20 +231,42 @@ while run:
 
             if waiting_for_only_enter and received_only_enter:
                 question = 1
+                input = ""
                 received_only_enter = False
+                waiting_for_only_enter = False
 
         if question != 0:
             question_obj = get_question_object()
             if not waiting_for_only_enter:
                 printx.print2screen(question_obj.question, 0, (line - CURSOR) * 10, FONT_SIZE)
                 user_input_box()
-            if input in question_obj.answer and received_enter:
+
+            if question == 5:
+                inputs = input.split(" ")
+                if len(inputs) == 2:
+                    if inputs[0] in question_obj.answer and inputs[1] in question_obj.answer:
+                        wrong_answer = False
+                    else:
+                        wrong_answer = True
+                else:
+                    wrong_answer = True
+            else:
+                if input != "" and input in question_obj.answer:
+                    wrong_answer = False
+                else:
+                    wrong_answer = True
+
+            if not wrong_answer and received_enter:
                 if not write_answer_right_string:
                     write_answer_right_string = random.choice(commonprompts.right_answer) + commonprompts.cont_text[1]
+                    if question == 7:
+                        write_answer_right_string = "Here is your egg, Easter Elephant" + commonprompts.cont_text[1]
+                for index in range(10):
+                    mask_screen = pygame.Rect((0, (line + index) * FONT_SIZE), (1500, FONT_SIZE))
+                    pygame.draw.rect(screen, 'black', mask_screen)
                 printx.print2screen(write_answer_right_string, 0, (line - CURSOR) * 10, FONT_SIZE)
                 waiting_for_only_enter = True
                 pygame.time.delay(200)
-
             elif input != "" and received_enter:
                 if not wrong_answer_output_string:
                     skip_typing = False
@@ -247,22 +274,16 @@ while run:
                         wrong_answer_output_string = random.choice(commonprompts.hint_precursor) + random.choice(question_obj.hint) + \
                                                 commonprompts.cont_text[1]
                         wrong_answers_list = []
+                    elif (len(wrong_answers_list)+1) % 3 == 0:
+                        wrong_answer_output_string = random.choice(commonprompts.wrong_answer) + random.choice(question_obj.prompts) + \
+                                                commonprompts.cont_text[2]
+                        wrong_answers_list.append(input)
                     else:
                         wrong_answer_output_string = random.choice(commonprompts.wrong_answer) + random.choice(commonprompts.basic_prompts) + commonprompts.cont_text[1]
                         wrong_answers_list.append(input)
                 printx.print2screen(wrong_answer_output_string, 0, printx.get_y_coordinates() + FONT_SIZE, FONT_SIZE)
                 pygame.time.delay(200)
                 skip_typing = True
-
-            # if len(wrong_answers_list) == hint_threshold and not hint_string:
-            #     if not hint_string:
-            #         skip_typing = False
-            #         hint_string = random.choice(commonprompts.hint_precursor) + random.choice(question_obj.hint) + \
-            #                       commonprompts.cont_text[1]
-            #         wrong_answers_list = []
-            #     printx.print2screen(hint_string, 0, printx.get_y_coordinates() + FONT_SIZE, FONT_SIZE)
-            #     skip_typing = True
-            # pygame.time.delay(200)
 
             if waiting_for_only_enter and received_only_enter:
                 question += 1
@@ -274,6 +295,8 @@ while run:
                 if question == 7:
                     game_won = True
                     time_start = time.time()
+                if question == 8:
+                    game_end = True
 
     if game_won:
         matrix_animations.start_animations(display_surface, screen)
@@ -281,19 +304,38 @@ while run:
         if current_time-time_start > 10:
             last_point = True
             game_won = False
+            display_surface.fill(pygame.Color('green'))
+            katie_print_first_time = True
+            pygame.time.delay(200)
+            display_surface.set_alpha(255)
             print_clue = True
-            waiting_for_only_enter = True
 
     if print_clue:
         print_clue_func()
-        if waiting_for_only_enter and received_only_enter:
-            received_only_enter = False
-            waiting_for_only_enter = False
+        user_input_box()
+        if input == "ok":
+            print_clue = False
+            input = ""
             give_easter_egg = True
+            for index in range(10):
+                y_offset = printx.get_y_coordinates()
+                mask_screen = pygame.Rect((0, y_offset+index*FONT_SIZE), (1500, FONT_SIZE))
+                pygame.draw.rect(screen, 'black', mask_screen)
 
-    if give_easter_egg:
-        print_clue = False
-        give_easter_egg = True
+    if game_end:
+        lines = question8.question.split('\n')
+        text_surface1 = font.render(lines[0], True, 'green')
+        text_surface2 = font.render(lines[1], True, 'green')
+        text_surface3 = font.render(lines[2], True, 'green')
+        text_surface4 = font.render(lines[3], True, 'green')
+        text_surface5 = font_big.render(lines[4], True, 'green')
+
+        # render at position stated in arguments
+        screen.blit(text_surface1, (WIDTH / 5, HEIGHT / 2.5))
+        screen.blit(text_surface2, (WIDTH / 5, HEIGHT / 2.5 + FONT_SIZE))
+        screen.blit(text_surface3, (WIDTH / 5, HEIGHT / 2.5 + FONT_SIZE*2))
+        screen.blit(text_surface4, (WIDTH / 5, HEIGHT / 2.5 + FONT_SIZE*3))
+        screen.blit(text_surface5, (-44, HEIGHT / 2.5 + FONT_SIZE * 4))
 
     # display.flip() will update only a portion of the
     # screen to updated, not full area
